@@ -84,7 +84,7 @@ function AiAgent() {
               </thead>
               <tbody>
                 {agents.map((agent) => (
-                  <RegisteredAgent key={agent.id} type={"agent"} name={agent.agent_name} 
+                  <RegisteredAgent key={agent.id} id={agent.id} type={"agent"} name={agent.agent_name} 
                     lastActive={formatDate(agent.updatedAt)} status={agent.status}
                     reputation={agent.reputation.score}
                     />

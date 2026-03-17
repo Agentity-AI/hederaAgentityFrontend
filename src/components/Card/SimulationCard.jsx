@@ -5,8 +5,8 @@ function SimulationCard({action,status}) {
 <div className="text-white text-sm mt-2"> {action}</div>
 <div className="flex mt-4 items-center gap-2">
   Status:
-  <div className={`w-3 ml-28 h-3 rounded-full ${status === "Verified" ? "bg-green-500" : status === "Pending" ? "bg-yellow-500" : "bg-red-500"}`}></div>
-  <span className={`text-sm ${status === "Verified" ? "text-green-500" : status === "Pending" ? "text-yellow-500" : "text-red-500"}`}>{status}</span>
+  <div className={`w-3 ml-28 h-3 rounded-full ${status === "verified" ? "bg-green-500" : status === "pending" ? "bg-yellow-500" : "bg-red-500"}`}></div>
+  <span className={`text-sm ${status === "verified" ? "text-green-500" : status === "pending" ? "text-yellow-500" : "text-red-500"}`}>{status}</span>
 </div>
     </div>
     

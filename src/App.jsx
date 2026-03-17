@@ -6,19 +6,21 @@ import DashboardPage from "./pages/DashboardPage.jsx";
 import AiAgent from "./pages/AiAgentPage.jsx";
 import SimulationPage from "./pages/SimulationPage.jsx";
 import LandingPag from "./pages/LandingPage.jsx";
-import SmartContract from "./pages/SmartContract.jsx";
 import { authentication } from "./store/zustant/useZustandHook.js";
+import Task from "./pages/Task.jsx";
 
 function App() {
-  const { dashBoard, getDashboard } = authentication();
+  const { dashBoard, getDashboard , audit, getAudit} = authentication();
 
   useEffect(() => {
     const loadDashboard = async () => {
       await getDashboard();
+      await getAudit();
     };
     loadDashboard();
-  }, [getDashboard]);
-
+  }, [getDashboard, getAudit]);
+console.log("Dashboard data:", dashBoard);
+console.log("Audit data:", audit);
   return (
     <>
       <Toaster
@@ -43,8 +45,8 @@ function App() {
           element={dashBoard ? <SimulationPage /> : <LandingPag />}
         />
         <Route
-          path="/audits"
-          element={dashBoard ? <SmartContract /> : <LandingPag />}
+          path="/tasks"
+          element={dashBoard ? <Task /> : <LandingPag />}
         />
       </Routes>
     </>

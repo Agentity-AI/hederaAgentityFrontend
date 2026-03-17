@@ -10,6 +10,7 @@ export const authentication = create((set) => ({
   agentDetails: null,
   smartContracts: [],
   user: null,
+  audit:[],
 
   registerUser: async (payload) => {
     try {
@@ -110,6 +111,22 @@ export const authentication = create((set) => ({
       toast.error("Failed to load agents", { id: "load-agents" });
     }
   },
+signOut: async () => {
+    try {
+      set({ loading: true, error: null });
+
+      await api.post("/auth/logout");
+
+      set({ dashBoard: null, user: null, loading: false });
+      toast.success("Logged out successfully!", { id: "logout" });
+    } catch (err) {
+      set({
+        loading: false,
+        error: err?.response?.data?.message ?? "Failed to logout",
+      });
+      toast.error("Logout failed, please try again", { id: "logout" });
+    }
+  },
   registerAgent: async (payload) => {
     try {
       set({ loading: true, error: null });
@@ -128,5 +145,87 @@ export const authentication = create((set) => ({
         error: err?.response?.data?.message ?? "Failed to register agent",
       });
       toast.error("Failed to register agent", { id: "register-agent" });
-    }}
+    }},
+    getAudit: async () => {
+      try {
+        set({ loading: true, error: null });
+        const res = await api.get(`/audits/history`);
+
+        if (!res || res.status < 200 || res.status >= 300) {
+          toast.error("Failed to load audit, please try again", { id: "load-audit" });
+          set({ loading: false });
+          return;
+        }
+       toast.success("Audit loaded!", { id: "load-audit" });
+        set({ loading: false, audit: res.data });
+      } catch (err) {
+        set({
+          loading: false,
+          error: err?.response?.data?.message ?? "Failed to load audit",
+        });
+        toast.error("Failed to load audit", { id: "load-audit" });
+      }
+    },
+    registerContract: async (payload) => {
+      try {
+        set({ loading: true, error: null });
+        const res = await api.post("/audits", payload);
+
+        if (!res || res.status < 200 || res.status >= 300) {
+          toast.error("Contract registration failed, please try again", { id: "register-contract" });
+          set({ loading: false });
+          return;
+        }
+       toast.success("Contract registered!", { id: "register-contract" });
+        set({ loading: false });
+      } catch (err) {
+        set({
+          loading: false,
+          error: err?.response?.data?.message ?? "Failed to register contract",
+        });
+        toast.error("Failed to register contract", { id: "register-contract" });
+      }
+    },
+    verifyAgent:async (agentId) => {
+      try {
+        set({ loading: true, error: null });
+        const res = await api.post(`/agents/${agentId}/verify`);
+
+        if (!res || res.status < 200 || res.status >= 300) {
+          toast.error("Agent verification failed, please try again", { id: "verify-agent" });
+          console.error("Verification failed response:", res);
+          set({ loading: false });
+          return;
+        }
+        consaole.log("Verification successful response:", res);
+       toast.success("Agent verified!", { id: "verify-agent" });
+        set({ loading: false });
+      } catch (err) {
+        set({
+          loading: false,
+          error: err?.response?.data?.message ?? "Failed to verify agent",
+        });
+        toast.error("Failed to verify agent", { id: "verify-agent" });
+      }},
+      linkWallet: async (payload) => {
+        try {
+          set({ loading: true, error: null });
+          const res = await api.post("/wallets/link", payload);
+
+          if (!res || res.status < 200 || res.status >= 300) {
+            toast.error("Wallet linking failed, please try again", { id: "link-wallet" });
+            set({ loading: false });
+            return;
+          }
+         toast.success("Wallet linked!", { id: "link-wallet" });
+          set({ loading: false });
+        } catch (err) {
+          set({
+            loading: false,
+            error: err?.response?.data?.message ?? "Failed to link wallet",
+          });
+          toast.error("Failed to link wallet", { id: "link-wallet" });
+        }
+      }
+
 }));
