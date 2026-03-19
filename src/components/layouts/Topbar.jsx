@@ -32,7 +32,7 @@ function Topbar() {
             <div className="h-4 w-4 rounded-full bg-[#0cf33a]" />
           </div>
 
-          <span className="text-xs font-mono">Avalanche</span>
+          <span className="text-xs font-mono">Hedera</span>
         </div>
 
         {/* Notification icon */}
